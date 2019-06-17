@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.betpawa.wallet.proto";
+
+service WalletService {
+    rpc deposit (WalletRequest) returns (Empty) {
+    }
+    rpc withdraw (WalletRequest) returns (Empty) {
+    }
+    rpc balance (WalletRequest) returns (BalanceResponse) {
+    }
+}
+
+enum Operation {
+    DEPOSIT = 0;
+    WITHDRAW = 1;
+    BALANCE = 2;
+}
+
+enum Currency {
+    EUR = 0;
+    USD = 1;
+    GBP = 2;
+}
+
+message BalanceResponse {
+    string message = 1;
+}
+
+message WalletRequest {
+    int64 userId = 1;
+    string amount = 2;
+    Currency currency = 3;
+}
+
+message Empty {
+
+}
+
+enum ErrorMessage {
+    INSUFFICIENT_FUNDS = 0;
+    UNKNOWN_CURRENCY = 1;
+}
