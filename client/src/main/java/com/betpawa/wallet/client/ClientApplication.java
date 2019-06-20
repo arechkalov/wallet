@@ -1,9 +1,8 @@
 package com.betpawa.wallet.client;
 
-import com.betpawa.wallet.client.model.ClientProperties;
 import com.betpawa.wallet.client.service.ClientService;
-import com.betpawa.wallet.proto.BalanceResponse;
-import com.google.common.util.concurrent.ListenableFuture;
+import com.betpawa.wallet.client.service.GrpcGateway;
+import io.reactivex.Observable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +16,12 @@ import org.springframework.context.annotation.Bean;
 import java.util.Arrays;
 
 @SpringBootApplication
-public class ClientApplication implements ApplicationRunner{
+public class ClientApplication implements ApplicationRunner {
 
     private static final Logger logger = LoggerFactory.getLogger(ClientApplication.class);
+
+    @Autowired
+    private ClientService clientService;
 
     @Bean
     public ExitCodeGenerator exitCodeGenerator() {
@@ -27,21 +29,21 @@ public class ClientApplication implements ApplicationRunner{
     }
 
     @Autowired
-    private ClientService clientService;
+    private GrpcGateway grpcGateway;
 
     public static void main(final String... args) {
         SpringApplication.exit(SpringApplication.run(ClientApplication.class, args));
     }
 
     @Override
-    public void run(ApplicationArguments args) throws Exception {
+    public void run(ApplicationArguments args) {
         logger.info("Application started with command-line arguments: {}", Arrays.toString(args.getSourceArgs()));
         for (String name : args.getOptionNames()) {
             logger.info("arg-" + name + "=" + args.getOptionValues(name));
         }
 
-//        ListenableFuture<BalanceResponse> balanceForUser = clientService.getBalanceForUser(1L);
-//        System.out.println("user balance: " + balanceForUser.get().getMessage());
+        Observable<String> balance = clientService.balance(1L);
+        System.out.println(balance.firstElement());
 
 
     }

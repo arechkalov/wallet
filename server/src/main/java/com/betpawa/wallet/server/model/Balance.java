@@ -33,6 +33,8 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Table(name = "BALANCE")
 public class Balance implements Serializable {
 
+    private final static long serialVersionUID = 2398467923L;
+
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "BALANCE_ID", unique = true, nullable = false)

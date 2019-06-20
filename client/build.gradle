@@ -33,10 +33,17 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.8'
 
     compile group: 'io.grpc', name: 'grpc-netty-shaded', version: '1.21.0'
+    compile 'io.reactivex.rxjava2:rxjava:2.2.0'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-webflux', version: '2.1.6.RELEASE'
+    compile group: 'javax.el', name: 'javax.el-api', version: '3.0.0'
+    compile group: 'io.projectreactor.addons', name: 'reactor-adapter', version: '3.2.3.RELEASE'
 
-    compile('org.springframework.boot:spring-boot-starter-web') {
-        exclude group: 'io.opencensus', module: 'opencensus-api'
-    }
+    compile group: 'org.glassfish', name: 'javax.el', version: '3.0.0'
+
+
+//    compile('org.springframework.boot:spring-boot-starter-web') {
+//        exclude group: 'io.opencensus', module: 'opencensus-api'
+//    }
     compile("net.devh:grpc-client-spring-boot-starter:2.4.0.RELEASE")
     compile project(':proto')
 

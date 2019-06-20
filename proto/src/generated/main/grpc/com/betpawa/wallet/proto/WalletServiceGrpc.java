@@ -28,21 +28,21 @@ public final class WalletServiceGrpc {
 
   // Static method descriptors that strictly reflect the proto.
   private static volatile io.grpc.MethodDescriptor<com.betpawa.wallet.proto.WalletRequest,
-      com.betpawa.wallet.proto.Empty> getDepositMethod;
+      com.google.protobuf.Empty> getDepositMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "deposit",
       requestType = com.betpawa.wallet.proto.WalletRequest.class,
-      responseType = com.betpawa.wallet.proto.Empty.class,
+      responseType = com.google.protobuf.Empty.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
   public static io.grpc.MethodDescriptor<com.betpawa.wallet.proto.WalletRequest,
-      com.betpawa.wallet.proto.Empty> getDepositMethod() {
-    io.grpc.MethodDescriptor<com.betpawa.wallet.proto.WalletRequest, com.betpawa.wallet.proto.Empty> getDepositMethod;
+      com.google.protobuf.Empty> getDepositMethod() {
+    io.grpc.MethodDescriptor<com.betpawa.wallet.proto.WalletRequest, com.google.protobuf.Empty> getDepositMethod;
     if ((getDepositMethod = WalletServiceGrpc.getDepositMethod) == null) {
       synchronized (WalletServiceGrpc.class) {
         if ((getDepositMethod = WalletServiceGrpc.getDepositMethod) == null) {
           WalletServiceGrpc.getDepositMethod = getDepositMethod = 
-              io.grpc.MethodDescriptor.<com.betpawa.wallet.proto.WalletRequest, com.betpawa.wallet.proto.Empty>newBuilder()
+              io.grpc.MethodDescriptor.<com.betpawa.wallet.proto.WalletRequest, com.google.protobuf.Empty>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(
                   "WalletService", "deposit"))
@@ -50,7 +50,7 @@ public final class WalletServiceGrpc {
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.betpawa.wallet.proto.WalletRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.betpawa.wallet.proto.Empty.getDefaultInstance()))
+                  com.google.protobuf.Empty.getDefaultInstance()))
                   .setSchemaDescriptor(new WalletServiceMethodDescriptorSupplier("deposit"))
                   .build();
           }
@@ -60,21 +60,21 @@ public final class WalletServiceGrpc {
   }
 
   private static volatile io.grpc.MethodDescriptor<com.betpawa.wallet.proto.WalletRequest,
-      com.betpawa.wallet.proto.Empty> getWithdrawMethod;
+      com.google.protobuf.Empty> getWithdrawMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "withdraw",
       requestType = com.betpawa.wallet.proto.WalletRequest.class,
-      responseType = com.betpawa.wallet.proto.Empty.class,
+      responseType = com.google.protobuf.Empty.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
   public static io.grpc.MethodDescriptor<com.betpawa.wallet.proto.WalletRequest,
-      com.betpawa.wallet.proto.Empty> getWithdrawMethod() {
-    io.grpc.MethodDescriptor<com.betpawa.wallet.proto.WalletRequest, com.betpawa.wallet.proto.Empty> getWithdrawMethod;
+      com.google.protobuf.Empty> getWithdrawMethod() {
+    io.grpc.MethodDescriptor<com.betpawa.wallet.proto.WalletRequest, com.google.protobuf.Empty> getWithdrawMethod;
     if ((getWithdrawMethod = WalletServiceGrpc.getWithdrawMethod) == null) {
       synchronized (WalletServiceGrpc.class) {
         if ((getWithdrawMethod = WalletServiceGrpc.getWithdrawMethod) == null) {
           WalletServiceGrpc.getWithdrawMethod = getWithdrawMethod = 
-              io.grpc.MethodDescriptor.<com.betpawa.wallet.proto.WalletRequest, com.betpawa.wallet.proto.Empty>newBuilder()
+              io.grpc.MethodDescriptor.<com.betpawa.wallet.proto.WalletRequest, com.google.protobuf.Empty>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(
                   "WalletService", "withdraw"))
@@ -82,7 +82,7 @@ public final class WalletServiceGrpc {
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.betpawa.wallet.proto.WalletRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  com.betpawa.wallet.proto.Empty.getDefaultInstance()))
+                  com.google.protobuf.Empty.getDefaultInstance()))
                   .setSchemaDescriptor(new WalletServiceMethodDescriptorSupplier("withdraw"))
                   .build();
           }
@@ -153,14 +153,14 @@ public final class WalletServiceGrpc {
     /**
      */
     public void deposit(com.betpawa.wallet.proto.WalletRequest request,
-        io.grpc.stub.StreamObserver<com.betpawa.wallet.proto.Empty> responseObserver) {
+        io.grpc.stub.StreamObserver<com.google.protobuf.Empty> responseObserver) {
       asyncUnimplementedUnaryCall(getDepositMethod(), responseObserver);
     }
 
     /**
      */
     public void withdraw(com.betpawa.wallet.proto.WalletRequest request,
-        io.grpc.stub.StreamObserver<com.betpawa.wallet.proto.Empty> responseObserver) {
+        io.grpc.stub.StreamObserver<com.google.protobuf.Empty> responseObserver) {
       asyncUnimplementedUnaryCall(getWithdrawMethod(), responseObserver);
     }
 
@@ -178,14 +178,14 @@ public final class WalletServiceGrpc {
             asyncUnaryCall(
               new MethodHandlers<
                 com.betpawa.wallet.proto.WalletRequest,
-                com.betpawa.wallet.proto.Empty>(
+                com.google.protobuf.Empty>(
                   this, METHODID_DEPOSIT)))
           .addMethod(
             getWithdrawMethod(),
             asyncUnaryCall(
               new MethodHandlers<
                 com.betpawa.wallet.proto.WalletRequest,
-                com.betpawa.wallet.proto.Empty>(
+                com.google.protobuf.Empty>(
                   this, METHODID_WITHDRAW)))
           .addMethod(
             getBalanceMethod(),
@@ -219,7 +219,7 @@ public final class WalletServiceGrpc {
     /**
      */
     public void deposit(com.betpawa.wallet.proto.WalletRequest request,
-        io.grpc.stub.StreamObserver<com.betpawa.wallet.proto.Empty> responseObserver) {
+        io.grpc.stub.StreamObserver<com.google.protobuf.Empty> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getDepositMethod(), getCallOptions()), request, responseObserver);
     }
@@ -227,7 +227,7 @@ public final class WalletServiceGrpc {
     /**
      */
     public void withdraw(com.betpawa.wallet.proto.WalletRequest request,
-        io.grpc.stub.StreamObserver<com.betpawa.wallet.proto.Empty> responseObserver) {
+        io.grpc.stub.StreamObserver<com.google.protobuf.Empty> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getWithdrawMethod(), getCallOptions()), request, responseObserver);
     }
@@ -261,14 +261,14 @@ public final class WalletServiceGrpc {
 
     /**
      */
-    public com.betpawa.wallet.proto.Empty deposit(com.betpawa.wallet.proto.WalletRequest request) {
+    public com.google.protobuf.Empty deposit(com.betpawa.wallet.proto.WalletRequest request) {
       return blockingUnaryCall(
           getChannel(), getDepositMethod(), getCallOptions(), request);
     }
 
     /**
      */
-    public com.betpawa.wallet.proto.Empty withdraw(com.betpawa.wallet.proto.WalletRequest request) {
+    public com.google.protobuf.Empty withdraw(com.betpawa.wallet.proto.WalletRequest request) {
       return blockingUnaryCall(
           getChannel(), getWithdrawMethod(), getCallOptions(), request);
     }
@@ -301,7 +301,7 @@ public final class WalletServiceGrpc {
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.betpawa.wallet.proto.Empty> deposit(
+    public com.google.common.util.concurrent.ListenableFuture<com.google.protobuf.Empty> deposit(
         com.betpawa.wallet.proto.WalletRequest request) {
       return futureUnaryCall(
           getChannel().newCall(getDepositMethod(), getCallOptions()), request);
@@ -309,7 +309,7 @@ public final class WalletServiceGrpc {
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<com.betpawa.wallet.proto.Empty> withdraw(
+    public com.google.common.util.concurrent.ListenableFuture<com.google.protobuf.Empty> withdraw(
         com.betpawa.wallet.proto.WalletRequest request) {
       return futureUnaryCall(
           getChannel().newCall(getWithdrawMethod(), getCallOptions()), request);
@@ -347,11 +347,11 @@ public final class WalletServiceGrpc {
       switch (methodId) {
         case METHODID_DEPOSIT:
           serviceImpl.deposit((com.betpawa.wallet.proto.WalletRequest) request,
-              (io.grpc.stub.StreamObserver<com.betpawa.wallet.proto.Empty>) responseObserver);
+              (io.grpc.stub.StreamObserver<com.google.protobuf.Empty>) responseObserver);
           break;
         case METHODID_WITHDRAW:
           serviceImpl.withdraw((com.betpawa.wallet.proto.WalletRequest) request,
-              (io.grpc.stub.StreamObserver<com.betpawa.wallet.proto.Empty>) responseObserver);
+              (io.grpc.stub.StreamObserver<com.google.protobuf.Empty>) responseObserver);
           break;
         case METHODID_BALANCE:
           serviceImpl.balance((com.betpawa.wallet.proto.WalletRequest) request,

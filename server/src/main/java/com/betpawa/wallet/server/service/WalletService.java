@@ -2,12 +2,12 @@ package com.betpawa.wallet.server.service;
 
 import com.betpawa.wallet.proto.BalanceResponse;
 import com.betpawa.wallet.proto.Currency;
-import com.betpawa.wallet.proto.Empty;
 import com.betpawa.wallet.proto.WalletRequest;
 import com.betpawa.wallet.proto.WalletServiceGrpc;
 import com.betpawa.wallet.server.model.Balance;
 import com.betpawa.wallet.server.repository.BalanceRepository;
 import com.betpawa.wallet.server.service.exception.WalletException;
+import com.google.protobuf.Empty;
 import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
 import io.grpc.stub.StreamObserver;
