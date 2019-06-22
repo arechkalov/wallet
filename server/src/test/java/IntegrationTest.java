@@ -59,7 +59,7 @@ public class IntegrationTest {
         String serverName = InProcessServerBuilder.generateName();
 
         grpcCleanup.register(InProcessServerBuilder
-            .forName(serverName).directExecutor().addService(new WalletService(balanceRepository)).build().start());
+            .forName(serverName).directExecutor().addService(new WalletService(balanceRepository, validator)).build().start());
 
         WalletServiceGrpc.WalletServiceBlockingStub blockingStub = WalletServiceGrpc.newBlockingStub(
             grpcCleanup.register(InProcessChannelBuilder.forName(serverName).directExecutor().build()));

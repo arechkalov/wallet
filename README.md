@@ -107,6 +107,6 @@ number.of.users=100
     * Logging added for tracing requests
     * Configured number.of.users (default is 100) to start server with empty balances for each.
     * Added integration test on server side with in-mem H2 database.
-    * Client exists when all requests are done.
+    * Client exits when all requests are done.
 ---
 

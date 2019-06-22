@@ -1,7 +1,6 @@
 package com.betpawa.wallet.server.service;
 
 import com.betpawa.wallet.proto.BalanceResponse;
-import com.betpawa.wallet.proto.Currency;
 import com.betpawa.wallet.proto.WalletRequest;
 import com.betpawa.wallet.proto.WalletServiceGrpc;
 import com.betpawa.wallet.server.model.Balance;
@@ -24,27 +23,32 @@ import java.util.stream.Collectors;
 public class WalletService extends WalletServiceGrpc.WalletServiceImplBase {
 
     private final BalanceRepository balanceRepository;
+    private final Validator validator;
 
-    public WalletService(BalanceRepository balanceRepository) {
+    public WalletService(BalanceRepository balanceRepository, Validator validator) {
         this.balanceRepository = balanceRepository;
+        this.validator = validator;
     }
 
 
     @Override
     @Transactional
     public void deposit(final WalletRequest request, final StreamObserver<Empty> responseObserver) {
-        log.info("Received request deposit " + request.getAmount() + request.getCurrency() + " for userId = " + request.getUserId());
-        validateCurrency(request);
+        log.info("Received validateRequest deposit " + request.getAmount() + request.getCurrency() + " for userId = " + request.getUserId());
+        validator.validateRequest(request);
 
         try {
             final BigDecimal amount = new BigDecimal(request.getAmount());
             final Balance balance = balanceRepository.getBalanceByUserIdAndCurrency(request.getUserId(), request.getCurrency());
-            validateNotNull(balance);
+            validator.validateNotNull(balance);
             balance.deposit(amount);
             updateVersion(balance);
             balanceRepository.saveAndFlush(balance);
             responseObserver.onNext(Empty.newBuilder().build());
             responseObserver.onCompleted();
+        } catch (WalletException e) {
+            log.error(e.getMessage());
+            responseObserver.onError(new StatusRuntimeException(e.getStatus().withDescription(e.getMessage())));
         } catch (Exception e) {
             log.error("An error occurred for user {} with message {} ", request.getUserId(), e.getMessage());
             responseObserver.onError(
@@ -58,12 +62,12 @@ public class WalletService extends WalletServiceGrpc.WalletServiceImplBase {
     @Override
     @Transactional
     public void withdraw(final WalletRequest request, final StreamObserver<Empty> responseObserver) {
-        log.info("Received request withdraw " + request.getAmount() + request.getCurrency() + " for userId = " + request.getUserId());
-        validateCurrency(request);
+        log.info("Received validateRequest withdraw " + request.getAmount() + request.getCurrency() + " for userId = " + request.getUserId());
+        validator.validateRequest(request);
         try {
             final BigDecimal amount = new BigDecimal(request.getAmount());
             final Balance balance = balanceRepository.getBalanceByUserIdAndCurrency(request.getUserId(), request.getCurrency());
-            validateNotNull(balance);
+            validator.validateNotNull(balance);
 
             if (balance.getAmount().compareTo(amount) < 0) {
                 throw new WalletException(Status.FAILED_PRECONDITION, "Insufficient funds");
@@ -107,18 +111,6 @@ public class WalletService extends WalletServiceGrpc.WalletServiceImplBase {
                     .withDescription(e.getMessage())
                     .withCause(e)
                     .asRuntimeException());
-        }
-    }
-
-    private static void validateNotNull(final Balance balance) {
-        if (balance == null) {
-            throw new WalletException(Status.NOT_FOUND, "Balance for this user doesn't exist");
-        }
-    }
-
-    private static void validateCurrency(final WalletRequest request) {
-        if (request.getCurrency().equals(Currency.UNRECOGNIZED)) {
-            throw new WalletException(Status.INVALID_ARGUMENT, "Unknown currency");
         }
     }
 
