@@ -54,7 +54,7 @@ public class ClientApplication implements ApplicationRunner {
 
         List<ForkJoinTask> taskList = new ArrayList<>();
         ForkJoinPool forkJoinPool = new ForkJoinPool(requests.intValue());
-        long time = System.currentTimeMillis();
+        long currentTime = System.currentTimeMillis();
         for (int i = 1; i <= users; i++) {
             ForkJoinTask<?> submit =
                 forkJoinPool
@@ -74,9 +74,10 @@ public class ClientApplication implements ApplicationRunner {
         }
 
         taskList.forEach(ForkJoinTask::join);
-        long timeTaken = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - time);
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - currentTime);
         int numberOFCalls = RoundResource.getNumberOfCalls().get();
-        long perSecond = numberOFCalls/timeTaken;
+        long perSecond = numberOFCalls/seconds;
+        log.info("Number of total requests was done: {}", numberOFCalls);
         log.info("Number of requests per second results: {}", perSecond);
     }
 

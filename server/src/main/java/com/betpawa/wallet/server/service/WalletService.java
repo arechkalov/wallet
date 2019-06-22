@@ -131,6 +131,7 @@ public class WalletService extends WalletServiceGrpc.WalletServiceImplBase {
     }
 
     private void updateVersion(Balance balance) {
+        balanceRepository.flush();
         Balance latest = balanceRepository.getOne(balance.getBalanceId());
         balance.setVersion(latest.getVersion());
     }
