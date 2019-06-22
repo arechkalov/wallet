@@ -1,18 +1,17 @@
 import com.betpawa.wallet.proto.BalanceResponse;
 import com.betpawa.wallet.proto.Currency;
-import com.betpawa.wallet.proto.Empty;
 import com.betpawa.wallet.proto.WalletRequest;
 import com.betpawa.wallet.proto.WalletServiceGrpc;
 import com.betpawa.wallet.server.ServerApplication;
 import com.betpawa.wallet.server.model.Balance;
 import com.betpawa.wallet.server.repository.BalanceRepository;
 import com.betpawa.wallet.server.service.WalletService;
+import com.google.protobuf.Empty;
 import io.grpc.StatusRuntimeException;
 import io.grpc.inprocess.InProcessChannelBuilder;
 import io.grpc.inprocess.InProcessServerBuilder;
 import io.grpc.testing.GrpcCleanupRule;
 import org.junit.Rule;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,10 +33,10 @@ public class IntegrationTest {
     @Rule
     public final GrpcCleanupRule grpcCleanup = new GrpcCleanupRule();
 
-    @BeforeEach
+    @Test
     @Transactional
-    void setUp() {
-        Balance balance1 = Balance.builder()
+    void test() throws Exception {
+        Balance b1 = Balance.builder()
             .balanceId(1L)
             .amount(BigDecimal.ZERO)
             .currency(Currency.USD)
@@ -45,7 +44,7 @@ public class IntegrationTest {
             .version(1)
             .build();
 
-        Balance balance2 = Balance.builder()
+        Balance b2 = Balance.builder()
             .balanceId(2L)
             .amount(BigDecimal.ZERO)
             .currency(Currency.EUR)
@@ -53,14 +52,10 @@ public class IntegrationTest {
             .version(1)
             .build();
 
-        balanceRepository.saveAndFlush(balance1);
-        balanceRepository.saveAndFlush(balance2);
+        balanceRepository.saveAndFlush(b1);
+        balanceRepository.saveAndFlush(b2);
         balanceRepository.flush();
-    }
 
-    @Test
-    @Transactional
-    void test() throws Exception {
         String serverName = InProcessServerBuilder.generateName();
 
         grpcCleanup.register(InProcessServerBuilder
@@ -92,8 +87,8 @@ public class IntegrationTest {
         BalanceResponse balance = blockingStub.balance(WalletRequest.newBuilder()
             .setUserId(1L)
             .build());
-        assertThat(balance.getMessage()).isEqualTo("Balance(userId=1, currency=USD, amount=100)\n"
-            + "Balance(userId=1, currency=EUR, amount=0)");
+        assertThat(balance.getMessage()).isEqualTo("Balance(currency=USD, userId=1, amount=100)\n"
+            + "Balance(currency=EUR, userId=1, amount=0)");
 
         //Step 4
         try {
@@ -118,8 +113,8 @@ public class IntegrationTest {
             .setUserId(1L)
             .build());
 
-        assertThat(balance2.getMessage()).isEqualTo("Balance(userId=1, currency=USD, amount=100)\n"
-            + "Balance(userId=1, currency=EUR, amount=100)");
+        assertThat(balance2.getMessage()).isEqualTo("Balance(currency=USD, userId=1, amount=100)\n"
+            + "Balance(currency=EUR, userId=1, amount=100)");
 
         //Step 7
         try {
@@ -144,23 +139,23 @@ public class IntegrationTest {
             .setUserId(1L)
             .build());
 
-        assertThat(balance3.getMessage()).isEqualTo("Balance(userId=1, currency=USD, amount=200)\n"
-            + "Balance(userId=1, currency=EUR, amount=100)");
+        assertThat(balance3.getMessage()).isEqualTo("Balance(currency=USD, userId=1, amount=200)\n"
+            + "Balance(currency=EUR, userId=1, amount=100)");
 
         //Step 10
         blockingStub.withdraw(WalletRequest.newBuilder()
-                .setUserId(1L)
-                .setAmount("200")
-                .setCurrency(Currency.USD)
-                .build());
+            .setUserId(1L)
+            .setAmount("200")
+            .setCurrency(Currency.USD)
+            .build());
 
         //Step 11
         BalanceResponse balance4 = blockingStub.balance(WalletRequest.newBuilder()
             .setUserId(1L)
             .build());
 
-        assertThat(balance4.getMessage()).isEqualTo("Balance(userId=1, currency=USD, amount=0)\n"
-            + "Balance(userId=1, currency=EUR, amount=100)");
+        assertThat(balance4.getMessage()).isEqualTo("Balance(currency=USD, userId=1, amount=0)\n"
+            + "Balance(currency=EUR, userId=1, amount=100)");
 
         //Step 12
         try {

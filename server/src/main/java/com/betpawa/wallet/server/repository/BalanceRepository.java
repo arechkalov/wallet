@@ -11,10 +11,9 @@ import java.util.List;
 @Repository
 public interface BalanceRepository extends JpaRepository<Balance, Long> {
 
-    @Transactional
+    @Transactional(readOnly = true)
     Balance getBalanceByUserIdAndCurrency(Long userId, Currency currency);
 
-    @Transactional
+    @Transactional(readOnly = true)
     List<Balance> getBalanceByUserId(Long userId);
-
 }

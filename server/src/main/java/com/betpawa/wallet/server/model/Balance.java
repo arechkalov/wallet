@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
@@ -21,7 +22,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import static javax.persistence.GenerationType.IDENTITY;
+import static javax.persistence.GenerationType.AUTO;
 
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -29,6 +30,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Builder
 @ToString(exclude = {"balanceId", "version"})
 @Getter
+@Setter
 @Entity
 @Table(name = "BALANCE")
 public class Balance implements Serializable {
@@ -36,16 +38,16 @@ public class Balance implements Serializable {
     private final static long serialVersionUID = 2398467923L;
 
     @Id
-    @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "BALANCE_ID", unique = true, nullable = false)
+    @GeneratedValue(strategy = AUTO)
+    @Column(name = "BALANCE_ID", nullable = false, unique = true)
     private Long balanceId;
+
+    @Column(name = "CURRENCY_ID", nullable = false)
+    @Enumerated(EnumType.ORDINAL)
+    private Currency currency;
 
     @Column(name = "USER_ID", nullable = false)
     private Long userId;
-
-    @Column(name = "CURRENCY_ID", nullable = false, unique = true)
-    @Enumerated(EnumType.ORDINAL)
-    private Currency currency;
 
     @Column(name = "AMOUNT", nullable = false)
     private BigDecimal amount;

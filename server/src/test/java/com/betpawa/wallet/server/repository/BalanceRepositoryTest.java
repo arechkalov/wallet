@@ -6,6 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.math.BigDecimal;
@@ -17,6 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@TestPropertySource(properties = "number.of.users=1")
 class BalanceRepositoryTest {
 
     @Autowired
@@ -25,14 +27,14 @@ class BalanceRepositoryTest {
     @Test
     void shouldGetBalance() {
         Balance balance = balanceRepository.getBalanceByUserIdAndCurrency(1L, EUR);
-        assertThat(balance.getAmount()).isEqualTo(BigDecimal.valueOf(200L));
+        assertThat(balance.getAmount()).isEqualTo(BigDecimal.ZERO);
         assertThat(balance.getCurrency()).isEqualTo(EUR);
     }
 
     @Test
     void shouldReturnAllBalancesForUser() {
         List<Balance> balances = balanceRepository.getBalanceByUserId(1L);
-        assertThat(balances.size()).isEqualTo((2L));
+        assertThat(balances.size()).isEqualTo((3L));
     }
 
 }

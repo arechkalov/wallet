@@ -5,12 +5,18 @@ apply plugin: 'idea'
 def grpcVersion = '1.21.0'
 def protobufVersion = '3.7.1'
 
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url 'http://repo.spring.io/plugins-release' }
+    maven { url "https://plugins.gradle.org/m2/" }
+    maven { url 'https://repo.spring.io/libs-milestone' }
+}
+
 dependencies {
     implementation "io.grpc:grpc-protobuf:${grpcVersion}"
     implementation "io.grpc:grpc-stub:${grpcVersion}"
     compileOnly "javax.annotation:javax.annotation-api:1.2"
-
-    // examples/advanced need this for JsonFormat
     implementation "com.google.protobuf:protobuf-java-util:${protobufVersion}"
 
     runtimeOnly "io.grpc:grpc-netty-shaded:${grpcVersion}"
@@ -61,5 +67,12 @@ sourceSets {
 buildscript {
     dependencies {
         classpath "com.google.protobuf:protobuf-gradle-plugin:0.8.8"
+    }
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven { url 'http://repo.spring.io/plugins-release' }
+        maven { url "https://plugins.gradle.org/m2/" }
+        maven { url 'https://repo.spring.io/libs-milestone' }
     }
 }

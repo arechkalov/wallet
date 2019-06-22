@@ -5,7 +5,6 @@ import io.grpc.Channel;
 import io.grpc.netty.shaded.io.grpc.netty.NettyChannelBuilder;
 import net.devh.boot.grpc.client.channelfactory.GrpcChannelConfigurer;
 import net.devh.boot.grpc.client.inject.GrpcClient;
-import net.devh.boot.grpc.client.inject.StubTransformer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -22,7 +21,7 @@ public class GrpcClientConfig {
 		return (channelBuilder, name) -> {
 			if (channelBuilder instanceof NettyChannelBuilder) {
 				((NettyChannelBuilder) channelBuilder)
-					.keepAliveTime(15, TimeUnit.SECONDS)
+					.keepAliveTime(10, TimeUnit.SECONDS)
 					.keepAliveTimeout(5, TimeUnit.SECONDS)
 					.usePlaintext();
 			}
