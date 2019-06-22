@@ -29,12 +29,9 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
 
-    compile group: 'org.springframework.retry', name: 'spring-retry', version: '1.2.4.RELEASE'
-    compile group: 'com.vladmihalcea', name: 'db-util', version: '1.0.4'
     compile("net.devh:grpc-server-spring-boot-starter:2.4.0.RELEASE")
     compile 'org.springframework.boot:spring-boot-starter-data-jpa'
     compile 'mysql:mysql-connector-java'
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: '2.0.4.RELEASE'
 
     compile project(':proto')
     

@@ -13,11 +13,6 @@ import io.grpc.StatusRuntimeException;
 import io.grpc.stub.StreamObserver;
 import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.server.service.GrpcService;
-import org.hibernate.StaleObjectStateException;
-import org.springframework.dao.OptimisticLockingFailureException;
-import org.springframework.retry.annotation.Backoff;
-import org.springframework.retry.annotation.Retryable;
-import org.springframework.transaction.UnexpectedRollbackException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
@@ -37,7 +32,6 @@ public class WalletService extends WalletServiceGrpc.WalletServiceImplBase {
 
     @Override
     @Transactional
-    @Retryable(value = {StaleObjectStateException.class, OptimisticLockingFailureException.class}, backoff = @Backoff(delay = 10))
     public void deposit(final WalletRequest request, final StreamObserver<Empty> responseObserver) {
         log.info("Received request deposit " + request.getAmount() + request.getCurrency() + " for userId = " + request.getUserId());
         validateCurrency(request);
@@ -63,8 +57,6 @@ public class WalletService extends WalletServiceGrpc.WalletServiceImplBase {
 
     @Override
     @Transactional
-    @Retryable(value = {StaleObjectStateException.class, OptimisticLockingFailureException.class,
-        UnexpectedRollbackException.class}, backoff = @Backoff(delay = 10))
     public void withdraw(final WalletRequest request, final StreamObserver<Empty> responseObserver) {
         log.info("Received request withdraw " + request.getAmount() + request.getCurrency() + " for userId = " + request.getUserId());
         validateCurrency(request);

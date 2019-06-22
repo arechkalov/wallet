@@ -3,7 +3,6 @@ CREATE SCHEMA IF NOT EXISTS bet_pawa;
 
 USE `bet_pawa`;
 DROP TABLE IF EXISTS `balance`;
-DROP TABLE IF EXISTS `account`;
 DROP TABLE IF EXISTS `currency`;
 
 CREATE TABLE `currency`

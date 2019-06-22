@@ -9,14 +9,12 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.retry.annotation.EnableRetry;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.math.BigDecimal;
 
 @SpringBootApplication
 @EnableTransactionManagement
-@EnableRetry
 public class ServerApplication implements ApplicationRunner {
 
     @Value("${number.of.users}")

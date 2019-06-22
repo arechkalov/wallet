@@ -64,7 +64,7 @@ public class ClientApplication implements ApplicationRunner {
                                 RoundResource roundResource = roundGenerator.generateRound();
                                 List<String>
                                     balances =
-                                    roundResource.start(clientService, operationExecutor, ThreadLocalRandom.current().nextLong(1L, users+1));
+                                    roundResource.start(clientService, operationExecutor, ThreadLocalRandom.current().nextLong(1L, users + 1));
                                 log.info(String.join(LINE_SEPARATOR, balances));
                             }
                         });
@@ -76,7 +76,7 @@ public class ClientApplication implements ApplicationRunner {
         taskList.forEach(ForkJoinTask::join);
         long seconds = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - currentTime);
         int numberOFCalls = RoundResource.getNumberOfCalls().get();
-        long perSecond = numberOFCalls/seconds;
+        long perSecond = numberOFCalls / seconds;
         log.info("Number of total requests was done: {}", numberOFCalls);
         log.info("Number of requests per second results: {}", perSecond);
     }

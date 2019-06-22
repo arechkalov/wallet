@@ -13,24 +13,24 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 public class GrpcClientConfig {
 
-	@GrpcClient("wallet-server")
-	private Channel serverChannel;
+    @GrpcClient("wallet-server")
+    private Channel serverChannel;
 
-	@Bean
-	public GrpcChannelConfigurer keepAliveClientConfigurer() {
-		return (channelBuilder, name) -> {
-			if (channelBuilder instanceof NettyChannelBuilder) {
-				((NettyChannelBuilder) channelBuilder)
-					.keepAliveTime(10, TimeUnit.SECONDS)
-					.keepAliveTimeout(5, TimeUnit.SECONDS)
-					.usePlaintext();
-			}
-		};
-	}
+    @Bean
+    public GrpcChannelConfigurer keepAliveClientConfigurer() {
+        return (channelBuilder, name) -> {
+            if (channelBuilder instanceof NettyChannelBuilder) {
+                ((NettyChannelBuilder) channelBuilder)
+                    .keepAliveTime(10, TimeUnit.SECONDS)
+                    .keepAliveTimeout(5, TimeUnit.SECONDS)
+                    .usePlaintext();
+            }
+        };
+    }
 
 
-	@Bean
-	public WalletServiceGrpc.WalletServiceFutureStub walletServiceFutureStub() {
-		return WalletServiceGrpc.newFutureStub(serverChannel);
-	}
+    @Bean
+    public WalletServiceGrpc.WalletServiceFutureStub walletServiceFutureStub() {
+        return WalletServiceGrpc.newFutureStub(serverChannel);
+    }
 }
