@@ -102,7 +102,7 @@ number.of.users=100
 
 ### Explanation of important choices:
     * Sql schema was created with balance per user and per currency as dictionary table with USD, GBP and EUR values inserted
-    * Retry mechanism is not implemented, though Optimistick locking is applied on balance
+    * Retry mechanism is not implemented, though optimistic locking is applied on Balance entity
     * Common request was made for all calls, empty responses used for deposit and withdraw operations.
     * Logging added for tracing requests
     * Configured number.of.users (default is 100) to start server with empty balances for each.
