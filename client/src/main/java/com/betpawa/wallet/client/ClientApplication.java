@@ -75,10 +75,12 @@ public class ClientApplication implements ApplicationRunner {
 
         taskList.forEach(ForkJoinTask::join);
         long seconds = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - currentTime);
-        int numberOFCalls = RoundResource.getNumberOfCalls().get();
-        long perSecond = numberOFCalls / seconds;
-        log.info("Number of total requests was done: {}", numberOFCalls);
+        int numberOfCalls = RoundResource.getNumberOfCalls().get();
+        int numberOfFailedCalls = RoundResource.getNumberOfFailures().get();
+        long perSecond = numberOfCalls / seconds;
+        log.info("Number of total requests was done: {}", numberOfCalls);
         log.info("Number of requests per second results: {}", perSecond);
+        log.info("Number of failed requests: {}", numberOfFailedCalls);
     }
 
 }

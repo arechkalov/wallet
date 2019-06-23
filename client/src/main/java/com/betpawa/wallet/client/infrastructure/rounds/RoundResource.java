@@ -7,6 +7,8 @@ import com.betpawa.wallet.client.infrastructure.operations.WithdrawOperation;
 import com.betpawa.wallet.client.model.ClientRequestDTO;
 import com.betpawa.wallet.client.service.ClientService;
 import com.betpawa.wallet.proto.Currency;
+import io.grpc.Status;
+import io.grpc.StatusRuntimeException;
 import io.grpc.netty.shaded.io.netty.util.internal.ThreadLocalRandom;
 import io.reactivex.Observable;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @SuppressWarnings("Duplicates")
@@ -24,7 +27,7 @@ public enum RoundResource {
     ROUNDA {
         @Override
         public List<String> start(ClientService clientService, OperationExecutor operationExecutor, Long userId) {
-            log.debug("Starting round A");
+            log.info("Starting round A");
             List<String> strings = new ArrayList<>(16);
             Observable.just(
                 operationExecutor.executeOperation(new DepositOperation(clientService), new ClientRequestDTO(userId, "100", Currency.USD)),
@@ -41,8 +44,7 @@ public enum RoundResource {
                         },
                         e -> {
                             log.error(e.getMessage());
-                            getNumberOfCalls().incrementAndGet();
-                            getNumberOfFailures().incrementAndGet();
+                            countFailedCalls(e);
                         }
                     ),
                     e -> log.error(e.getMessage()),
@@ -54,7 +56,7 @@ public enum RoundResource {
     ROUNDB {
         @Override
         public List<String> start(ClientService clientService, OperationExecutor operationExecutor, Long userId) {
-            log.debug("Starting round B");
+            log.info("Starting round B");
             List<String> strings = new ArrayList<>(16);
             Observable.just(
                 operationExecutor.executeOperation(new WithdrawOperation(clientService), new ClientRequestDTO(userId, "100", Currency.GBP)),
@@ -69,8 +71,7 @@ public enum RoundResource {
                         },
                         e -> {
                             log.error(e.getMessage());
-                            getNumberOfCalls().incrementAndGet();
-                            getNumberOfFailures().incrementAndGet();
+                            countFailedCalls(e);
                         }
                     ),
                     e -> log.error(e.getMessage()),
@@ -82,7 +83,7 @@ public enum RoundResource {
     ROUNDC {
         @Override
         public List<String> start(ClientService clientService, OperationExecutor operationExecutor, Long userId) {
-            log.debug("Starting round C");
+            log.info("Starting round C");
             List<String> strings = new ArrayList<>(16);
             Observable.just(
                 operationExecutor.executeOperation(new BalanceOperation(clientService), new ClientRequestDTO(userId, null, null)),
@@ -100,14 +101,15 @@ public enum RoundResource {
                         },
                         e -> {
                             log.error(e.getMessage());
-                            getNumberOfCalls().incrementAndGet();
-                            getNumberOfFailures().incrementAndGet();
+                            countFailedCalls(e);
                         }
                     ),
                     e -> log.error(e.getMessage()),
                     () -> log.debug("round C done"));
             return strings;
         }
+
+
     };
 
     public abstract List<String> start(ClientService clientService, OperationExecutor operationExecutor, Long userId);
@@ -128,5 +130,19 @@ public enum RoundResource {
 
     public static AtomicInteger getNumberOfFailures() {
         return numberOfFailures;
+    }
+
+    private static void countFailedCalls(Throwable e) {
+        if (e instanceof ExecutionException) {
+            if (e.getMessage().contains("INTERNAL")) {
+                getNumberOfFailures().incrementAndGet();
+                getNumberOfCalls().decrementAndGet();
+            } else {
+                getNumberOfCalls().incrementAndGet();
+            }
+        } else {
+            numberOfCalls.decrementAndGet();
+            getNumberOfFailures().incrementAndGet();
+        }
     }
 }

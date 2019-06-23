@@ -42,7 +42,6 @@ public class WalletService extends WalletServiceGrpc.WalletServiceImplBase {
             final Balance balance = balanceRepository.getBalanceByUserIdAndCurrency(request.getUserId(), request.getCurrency());
             validator.validateNotNull(balance);
             balance.deposit(amount);
-            updateVersion(balance);
             balanceRepository.saveAndFlush(balance);
             responseObserver.onNext(Empty.newBuilder().build());
             responseObserver.onCompleted();
@@ -73,7 +72,6 @@ public class WalletService extends WalletServiceGrpc.WalletServiceImplBase {
                 throw new WalletException(Status.FAILED_PRECONDITION, "Insufficient funds");
             }
             balance.withdraw(amount);
-            updateVersion(balance);
             balanceRepository.saveAndFlush(balance);
             log.info("Withdrawn: " + amount + request.getCurrency() + " for userId = " + balance.getUserId());
             responseObserver.onNext(Empty.newBuilder().build());
@@ -114,9 +112,4 @@ public class WalletService extends WalletServiceGrpc.WalletServiceImplBase {
         }
     }
 
-    private void updateVersion(Balance balance) {
-        balanceRepository.flush();
-        Balance latest = balanceRepository.getOne(balance.getBalanceId());
-        balance.setVersion(latest.getVersion());
-    }
 }
