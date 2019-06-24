@@ -35,9 +35,8 @@ public class WalletService extends WalletServiceGrpc.WalletServiceImplBase {
     @Transactional
     public void deposit(final WalletRequest request, final StreamObserver<Empty> responseObserver) {
         log.info("Received validateRequest deposit " + request.getAmount() + request.getCurrency() + " for userId = " + request.getUserId());
-        validator.validateRequest(request);
-
         try {
+            validator.validateRequest(request);
             final BigDecimal amount = new BigDecimal(request.getAmount());
             final Balance balance = balanceRepository.getBalanceByUserIdAndCurrency(request.getUserId(), request.getCurrency());
             validator.validateNotNull(balance);
@@ -62,8 +61,8 @@ public class WalletService extends WalletServiceGrpc.WalletServiceImplBase {
     @Transactional
     public void withdraw(final WalletRequest request, final StreamObserver<Empty> responseObserver) {
         log.info("Received validateRequest withdraw " + request.getAmount() + request.getCurrency() + " for userId = " + request.getUserId());
-        validator.validateRequest(request);
         try {
+            validator.validateRequest(request);
             final BigDecimal amount = new BigDecimal(request.getAmount());
             final Balance balance = balanceRepository.getBalanceByUserIdAndCurrency(request.getUserId(), request.getCurrency());
             validator.validateNotNull(balance);
