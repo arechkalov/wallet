@@ -7,8 +7,6 @@ import com.betpawa.wallet.client.infrastructure.operations.WithdrawOperation;
 import com.betpawa.wallet.client.model.ClientRequestDTO;
 import com.betpawa.wallet.client.service.ClientService;
 import com.betpawa.wallet.proto.Currency;
-import io.grpc.Status;
-import io.grpc.StatusRuntimeException;
 import io.grpc.netty.shaded.io.netty.util.internal.ThreadLocalRandom;
 import io.reactivex.Observable;
 import lombok.extern.slf4j.Slf4j;
@@ -105,7 +103,7 @@ public enum RoundResource {
                         }
                     ),
                     e -> log.error(e.getMessage()),
-                    () -> log.debug("round C done"));
+                    () -> log.info("round C done"));
             return strings;
         }
 
@@ -136,12 +134,10 @@ public enum RoundResource {
         if (e instanceof ExecutionException) {
             if (e.getMessage().contains("INTERNAL")) {
                 getNumberOfFailures().incrementAndGet();
-                getNumberOfCalls().decrementAndGet();
             } else {
                 getNumberOfCalls().incrementAndGet();
             }
         } else {
-            numberOfCalls.decrementAndGet();
             getNumberOfFailures().incrementAndGet();
         }
     }

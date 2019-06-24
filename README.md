@@ -113,4 +113,4 @@ number.of.users=100
 ### Transactions per second on my development machine:
 
 This time is calculated in Client main run method: collecting each call to the server  after all rounds has completed depending on various scenarios the median number is ~150 transactions per second.
-The number of failed requests (Optimistic lock exception) is ~40%.
+The number of failed requests with optimistic lock exception is ~30%.
