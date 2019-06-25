@@ -32,7 +32,7 @@
 /server/out/
 /proto/build/
 /proto/out/
-/proto/src/generated/
+/proto/src/generated/*
 /gradle/*
 /gradlew/
 /.idea/vcs.xml
