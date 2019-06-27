@@ -5,6 +5,7 @@ import com.betpawa.wallet.proto.WalletServiceGrpc;
 import com.betpawa.wallet.server.ServerApplication;
 import com.betpawa.wallet.server.model.Balance;
 import com.betpawa.wallet.server.repository.BalanceRepository;
+import com.betpawa.wallet.server.service.Validator;
 import com.betpawa.wallet.server.service.WalletService;
 import com.google.protobuf.Empty;
 import io.grpc.StatusRuntimeException;
@@ -29,6 +30,9 @@ public class IntegrationTest {
 
     @Autowired
     private BalanceRepository balanceRepository;
+
+    @Autowired
+    private Validator validator;
 
     @Rule
     public final GrpcCleanupRule grpcCleanup = new GrpcCleanupRule();
@@ -57,6 +61,7 @@ public class IntegrationTest {
         balanceRepository.flush();
 
         String serverName = InProcessServerBuilder.generateName();
+
 
         grpcCleanup.register(InProcessServerBuilder
             .forName(serverName).directExecutor().addService(new WalletService(balanceRepository, validator)).build().start());
